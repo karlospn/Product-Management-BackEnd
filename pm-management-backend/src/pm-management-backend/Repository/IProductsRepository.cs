@@ -9,5 +9,6 @@ namespace pm_management_backend.Repository
     public interface IProductsRepository
     {
         Task<IEnumerable<Product>> GetAllProducts();
+        void AddProduct(Product productEntity);
     }
 }

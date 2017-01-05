@@ -18,8 +18,25 @@ namespace pm_management_backend.Repository
         }
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            var products = await _productsContext.Notes.Find(_ => true).ToListAsync();
+            var products = await _productsContext.Products.Find(_ => true).ToListAsync();
             return products;
+        }
+
+        public async Task<Product> GetOneProduct(string id)
+        {
+            var filter = Builders<Product>.Filter.Eq("Id", id);
+            return await _productsContext.Products.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async void AddProduct(Product productEntity)
+        {
+            await _productsContext.Products.InsertOneAsync(productEntity);
+        }
+
+        public async void DeleteProduct(int id)
+        {
+            await _productsContext.Products.DeleteOneAsync(
+                        Builders<Product>.Filter.Eq("Id", id));
         }
     }
 }

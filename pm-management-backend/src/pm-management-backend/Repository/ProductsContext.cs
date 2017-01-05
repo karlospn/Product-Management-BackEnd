@@ -25,7 +25,7 @@ namespace pm_management_backend.Repository
             }        
         }
 
-        public IMongoCollection<Product> Notes
+        public IMongoCollection<Product> Products
         {
             get
             {

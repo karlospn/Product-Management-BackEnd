@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using pm_management_backend.Models;
 using pm_management_backend.Repository;
 using pm_management_backend.ViewModel;
 
@@ -39,11 +40,17 @@ namespace pm_management_backend.Controllers.api.products
 
 
         [HttpPost("")]
-        public async Task<IActionResult> Post([FromBody] ProductViewModel ViewModel)
+        public async Task<IActionResult> Post([FromBody] ProductViewModel viewModel)
         {
             try
             {
-                return Ok();
+                if (ModelState.IsValid)
+                {
+                    var productsEntity = AutoMapper.Mapper.Map<Product>(viewModel);
+                    _productsRepository.AddProduct(productsEntity);
+                    return Created($"/api/products", viewModel);
+                }
+                return BadRequest("Model is not valid");
             }
             catch (Exception ex)
             {
