@@ -1,0 +1,7 @@
+﻿{
+  "ConnectionStrings": {
+    "DatabaseConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "management",
+    "CollectionName": "products"
+  }
+}
