@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,6 +30,7 @@ namespace pm_management_backend
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -42,6 +45,15 @@ namespace pm_management_backend
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddTransient<IProductsRepository, ProductsRepository>();
             services.AddTransient<ProductsContext>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
             services.AddMvc();
         }
 
@@ -56,6 +68,8 @@ namespace pm_management_backend
             app.UseApplicationInsightsRequestTelemetry();
 
             app.UseApplicationInsightsExceptionTelemetry();
+
+            app.UseCors("CorsPolicy");
 
             app.UseMvc();
         }
