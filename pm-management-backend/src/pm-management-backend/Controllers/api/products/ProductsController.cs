@@ -48,7 +48,8 @@ namespace pm_management_backend.Controllers.api.products
                 {
                     var productsEntity = AutoMapper.Mapper.Map<Product>(viewModel);
                     _productsRepository.AddProduct(productsEntity);
-                    return Created($"/api/products", viewModel);
+                    
+                    return Created($"/api/products", AutoMapper.Mapper.Map<ProductViewModel>(productsEntity));
                 }
                 return BadRequest("Model is not valid");
             }
